@@ -134,7 +134,7 @@ public class Draw extends Canvas {
 		if (Draw.view_x == 0) {
 			//Left side of screen
 			x = px;
-		} else if () {
+		} else if (Draw.view_x == mw - Draw.view_x) {
 			//Right side of screen
 			x = px;
 		} else {
