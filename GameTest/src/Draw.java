@@ -84,25 +84,26 @@ public class Draw extends Canvas {
 		if (map != null) {
 			int px = Instances.player.getX(), py = Instances.player.getY();
 			System.out.println("Player: " + px + " " + py);
+			System.out.println("Draw: " + Draw.WIDTH + " " + Draw.HEIGHT);
 			int mw = map.getWidth(), mh = map.getHeight();
 			System.out.println("Map: " + mw + " " + mh);
 			
 			//Set x view draw from
-			if (px < Draw.WIDTH/2) {
+			if (px <= Draw.WIDTH/2) {
 				//Left side of screen
 				Draw.view_x = 0;
-			} else if (px > mw - Draw.WIDTH/2) {
+			} else if (px >= mw - Draw.WIDTH/2) {
 				//Right side of screen
 				Draw.view_x = mw - Draw.WIDTH;
 			} else {
 				//Center of screen
-				Draw.view_x = px - Draw.WIDTH/2;
+				Draw.view_x = px - Draw.WIDTH;
 			}
 			//Set y view draw from
-			if (py < Draw.HEIGHT/2) {
+			if (py <= Draw.HEIGHT/2) {
 				//Top of screen
 				Draw.view_y = 0;
-			} else if (py > mh - Draw.HEIGHT/2) {
+			} else if (py >= mh - Draw.HEIGHT/2) {
 				//Bottom of screen
 				Draw.view_y = mh - Draw.HEIGHT;
 			} else {
