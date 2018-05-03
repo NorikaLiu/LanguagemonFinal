@@ -1,12 +1,16 @@
 public class Player {
 	// variables which we will use
-	private int x, y, tile_X, tile_Y;
+	private int x = Draw.HEIGHT, y = Draw.WIDTH, tile_X, tile_Y;
 	private boolean left = false, right = false, up = false, down = false, space = false;
 	private int walk_speed = 300, run_speed = 100;
 
 	public Player(int tile_X, int tile_Y) {
 		this.tile_X = tile_X;
 		this.tile_Y = tile_Y;
+		this.x = 300;
+		this.y = 300;
+		Draw.view_x = x - Draw.WIDTH/2;
+		Draw.view_y = y - Draw.HEIGHT/2;
 	}
 
 	// These 4 functions are able to set the direction

@@ -1,6 +1,7 @@
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferStrategy;
@@ -10,6 +11,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class Draw extends Canvas {
@@ -22,8 +24,12 @@ public class Draw extends Canvas {
 	private final int tile_Total = tile_R * tile_C;
 	private final int map_Size = tile_X * tile_Y * tile_Total;
 	
-	private final int WIDTH = 480;
-	private final int HEIGHT = 320;
+	public static final int WIDTH = 320;
+	public static final int HEIGHT = 240;
+	
+	public static int view_x = 0, view_y = 0;
+	
+	private JLabel ground;
 
 	public Draw() {
 		//Load the first map
@@ -37,6 +43,11 @@ public class Draw extends Canvas {
 		JPanel panel = (JPanel) frame.getContentPane();
 		panel.setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		panel.setLayout(null);
+		ground = new JLabel("Apple");
+		ground.setFont(new Font("Serif", Font.PLAIN, 36));
+		ground.setForeground(Color.MAGENTA);
+
+//		frame.add(ground);
 
 		canvas = new Canvas();
 		canvas.setBounds(0, 0, WIDTH, HEIGHT);
@@ -57,46 +68,90 @@ public class Draw extends Canvas {
 		//canvas.setBackground(Color.black);
 		// This will add our button handler to our program
 		canvas.addKeyListener(new ButtonHandler());
-
+		frame.add(ground);
+		
 	}
 
 	@Override
 	public Dimension getPreferredSize() {
 		return (map == null) ? new Dimension(this.WIDTH, this.HEIGHT) : new Dimension(map.getWidth(), map.getHeight());
 	}
-
+	
+	//DRAWS THE VIEW
 	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
 		if (map != null) {
 			int px = Instances.player.getX(), py = Instances.player.getY();
-			int mx = map.getWidth(), my = map.getHeight();
-			int x = 0, y = 0;
-			//FIGURE OUT HOW TO SET THE SCREEN AND WHERE TO DRAW THE MAP
-			if (mx + px <= 0) {
-				x = 0;
-			} else if (px + this.WIDTH/2 >= mx) {
-				x = mx - this.WIDTH;
-			} else x = px - this.WIDTH/2;
-			if (my - py - this.HEIGHT < 0) {
-				y = 0;
+			System.out.println("Player: " + px + " " + py);
+			int mw = map.getWidth(), mh = map.getHeight();
+			System.out.println("Map: " + mw + " " + mh);
+			
+			//Set x view draw from
+			if (px < Draw.WIDTH/2) {
+				//Left side of screen
+				Draw.view_x = 0;
+			} else if (px > mw - Draw.WIDTH/2) {
+				//Right side of screen
+				Draw.view_x = mw - Draw.WIDTH;
+			} else {
+				//Center of screen
+				Draw.view_x = px - Draw.WIDTH/2;
+			}
+			//Set y view draw from
+			if (py < Draw.HEIGHT/2) {
+				//Top of screen
+				Draw.view_y = 0;
+			} else if (py > mh - Draw.HEIGHT/2) {
+				//Bottom of screen
+				Draw.view_y = mh - Draw.HEIGHT;
+			} else {
+				//Center of screen
+				Draw.view_y = py - Draw.HEIGHT/2;
 			}
 			//DRAW MAP STARTING AT X AND Y COORDINATE ON CANVAS
-			g.drawImage(map, x, y, this);
+			System.out.println("XY: " + view_x + " " + view_y);
+			g.drawImage(map, view_x, view_y, this);
 		}
 	}
-
+	
+	//DRAWS EVERYTHING
 	public void render() {
 		Graphics2D g = (Graphics2D) bufferStrategy.getDrawGraphics();
 		g.clearRect(0, 0, WIDTH, HEIGHT);
 		paint(g);
-		render(g);
+		draw_player_in_view(g);
 		g.dispose();
 		bufferStrategy.show();
 	}
-
-	protected void render(Graphics2D g) {
+	
+	//DRAWS THE PLAYER
+	protected void draw_player_in_view(Graphics2D g) {
 		g.setColor(Color.pink);
-		g.fillRect(Instances.player.getX(), Instances.player.getY(), 15, 15);
+		int mw = map.getWidth(), mh = map.getHeight();
+		int px = Instances.player.getX(), py = Instances.player.getY();
+		int x = 0, y = 0;
+		if (Draw.view_x == 0) {
+			//Left side of screen
+			x = px;
+		} else if () {
+			//Right side of screen
+			x = px;
+		} else {
+			//Center of screen
+			x = view_x + this.WIDTH/2;
+		}
+		//Set y view draw from
+		if (Draw.view_y == 0) {
+			//Top of screen
+			y = py;
+		} else if (py > mh - this.HEIGHT/2) {
+			//Bottom of screen
+			y = py;
+		} else {
+			//Center of screen
+			y = view_y + this.HEIGHT/2;
+		}
+		g.fillRect(x, y, 16, 16);
 	}
 }
