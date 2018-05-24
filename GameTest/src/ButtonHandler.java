@@ -25,6 +25,7 @@ public class ButtonHandler extends KeyAdapter {
 			break;
 		case KeyEvent.VK_SPACE:
 			Instances.player.setRun(true);
+			Instances.screen.changeBack(true);
 			break;
 		}
 	}
@@ -52,6 +53,7 @@ public class ButtonHandler extends KeyAdapter {
 		case KeyEvent.VK_SPACE:
 			System.out.println("Released SPACE!");
 			Instances.player.setRun(false);
+			Instances.screen.changeBack(false);
 			break;
 		}
 	}

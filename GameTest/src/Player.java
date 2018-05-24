@@ -7,8 +7,8 @@ public class Player {
 	public Player(int tile_X, int tile_Y) {
 		this.tile_X = tile_X;
 		this.tile_Y = tile_Y;
-		this.x = 300;
-		this.y = 300;
+		this.x = 100;
+		this.y = 100;
 		Draw.view_x = x - Draw.WIDTH/2;
 		Draw.view_y = y - Draw.HEIGHT/2;
 	}
@@ -71,5 +71,7 @@ public class Player {
 			if (time >= finish)
 				break;
 		}
+
 	}
 }
+
